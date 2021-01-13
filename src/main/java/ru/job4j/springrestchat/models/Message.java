@@ -34,4 +34,12 @@ public class Message {
     public Message() {
         this.created = new Date();
     }
+
+    public static Message of(String text, Person author, Room room) {
+        Message message = new Message();
+        message.text = text;
+        message.author = author;
+        message.room = room;
+        return message;
+    }
 }

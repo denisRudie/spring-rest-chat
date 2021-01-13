@@ -19,4 +19,10 @@ public class Room {
 
     @Column(unique = true, nullable = false)
     private String name;
+
+    public static Room of(String name) {
+        Room room = new Room();
+        room.name = name;
+        return room;
+    }
 }

@@ -19,4 +19,10 @@ public class Role {
 
     @Column(unique = true, nullable = false)
     private String name;
+
+    public static Role of(String name) {
+        Role role = new Role();
+        role.name = name;
+        return role;
+    }
 }

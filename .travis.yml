@@ -3,13 +3,13 @@ jdk:
 - openjdk14
 sudo: false
 
+install: true
+script: mvn clean package -DskipTests=true
+
 services:
 - postgresql
 before_install:
 - psql -c 'create database chat;' -U postgres
-
-install: true
-script: mvn clean package -DskipTests=true
 
 after_success:
 - bash <(curl -s https://codecov.io/bash)

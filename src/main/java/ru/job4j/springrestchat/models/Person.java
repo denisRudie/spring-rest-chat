@@ -26,4 +26,12 @@ public class Person {
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
+
+    public static Person of(String username, String password, Role role) {
+        Person person = new Person();
+        person.username = username;
+        person.password = password;
+        person.role = role;
+        return person;
+    }
 }
