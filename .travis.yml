@@ -1,0 +1,17 @@
+language: java
+jdk:
+- openjdk14
+sudo: false
+
+services:
+- postgresql
+before_install:
+- psql -c 'create database chat;' -U postgres
+after_success:
+- bash <(curl -s https://codecov.io/bash)
+notifications:
+  email:
+    recipients:
+    - moonstamp1964@gmail.com
+    on_success: never
+    on_failure: always
