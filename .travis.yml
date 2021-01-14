@@ -1,14 +1,14 @@
 language: java
 jdk:
 - openjdk14
-sudo: false
+sudo: true
 
 install: true
-script: mvn clean package -DskipTests=true
 
 services:
 - postgresql
 before_install:
+- chmod +x mvnw
 - psql -c 'create database chat;' -U postgres
 
 after_success:
