@@ -4,11 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import ru.job4j.springrestchat.SpringRestChatApplication;
 import ru.job4j.springrestchat.models.Person;
 import ru.job4j.springrestchat.models.Role;
 import ru.job4j.springrestchat.repositories.PersonRepository;
@@ -23,7 +26,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(PersonController.class)
+@SpringBootTest(classes = SpringRestChatApplication.class)
+@AutoConfigureMockMvc
 public class PersonControllerTest {
 
     @Autowired
@@ -59,6 +63,7 @@ public class PersonControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void findAllPeople() throws Exception {
         List<Person> people = List.of(
                 testSavedPerson
@@ -76,6 +81,7 @@ public class PersonControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void findPersonById() throws Exception {
         when(repository.findById(1)).thenReturn(Optional.of(testSavedPerson));
 
@@ -90,6 +96,7 @@ public class PersonControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void createPerson() throws Exception {
         when(repository.save(testPerson)).thenReturn(testSavedPerson);
 
@@ -106,6 +113,7 @@ public class PersonControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void updatePerson() throws Exception {
         when(repository.save(testSavedPerson)).thenReturn(testSavedPerson);
         when(repository.existsById(1)).thenReturn(true);
@@ -117,6 +125,7 @@ public class PersonControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void deletePerson() throws Exception {
         doNothing().when(repository).deleteById(1);
 

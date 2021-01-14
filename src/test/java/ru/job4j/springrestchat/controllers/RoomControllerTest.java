@@ -4,11 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import ru.job4j.springrestchat.SpringRestChatApplication;
 import ru.job4j.springrestchat.models.Room;
 import ru.job4j.springrestchat.repositories.RoomRepository;
 
@@ -22,7 +25,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(RoomController.class)
+@SpringBootTest(classes = SpringRestChatApplication.class)
+@AutoConfigureMockMvc
 public class RoomControllerTest {
 
     @Autowired
@@ -49,6 +53,7 @@ public class RoomControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void findAllRooms() throws Exception {
         List<Room> rooms = List.of(
                 testSavedRoom
@@ -66,6 +71,7 @@ public class RoomControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void findRoomById() throws Exception {
         when(repository.findById(1)).thenReturn(Optional.of(testSavedRoom));
 
@@ -80,6 +86,7 @@ public class RoomControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void createRoom() throws Exception {
         when(repository.save(testRoom)).thenReturn(testSavedRoom);
 
@@ -96,6 +103,7 @@ public class RoomControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void updateRoom() throws Exception {
         when(repository.save(testSavedRoom)).thenReturn(testSavedRoom);
         when(repository.existsById(1)).thenReturn(true);
@@ -107,11 +115,11 @@ public class RoomControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void deleteRoom() throws Exception {
         doNothing().when(repository).deleteById(1);
 
         mockMvc.perform(delete(API_ID, 1))
                 .andExpect(status().isOk());
     }
-
 }

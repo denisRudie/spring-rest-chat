@@ -4,11 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import ru.job4j.springrestchat.SpringRestChatApplication;
 import ru.job4j.springrestchat.models.Message;
 import ru.job4j.springrestchat.models.Person;
 import ru.job4j.springrestchat.models.Role;
@@ -25,7 +28,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(MessageController.class)
+@SpringBootTest(classes = SpringRestChatApplication.class)
+@AutoConfigureMockMvc
 public class MessageControllerTest {
 
     @Autowired
@@ -68,6 +72,7 @@ public class MessageControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void findAllMessages() throws Exception {
         List<Message> messages = List.of(
                 testSavedMessage
@@ -85,6 +90,7 @@ public class MessageControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void findMessageById() throws Exception {
         when(repository.findById(1)).thenReturn(Optional.of(testSavedMessage));
 
@@ -99,6 +105,7 @@ public class MessageControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void createMessage() throws Exception {
         when(repository.save(testMessage)).thenReturn(testSavedMessage);
 
@@ -115,6 +122,7 @@ public class MessageControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void updateMessage() throws Exception {
         when(repository.save(testSavedMessage)).thenReturn(testSavedMessage);
         when(repository.existsById(1)).thenReturn(true);
@@ -126,6 +134,7 @@ public class MessageControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void deleteMessage() throws Exception {
         doNothing().when(repository).deleteById(1);
 

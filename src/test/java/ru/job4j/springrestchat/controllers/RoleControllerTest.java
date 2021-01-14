@@ -4,11 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import ru.job4j.springrestchat.SpringRestChatApplication;
 import ru.job4j.springrestchat.models.Role;
 import ru.job4j.springrestchat.repositories.RoleRepository;
 
@@ -22,7 +25,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(RoleController.class)
+@SpringBootTest(classes = SpringRestChatApplication.class)
+@AutoConfigureMockMvc
 public class RoleControllerTest {
 
     @Autowired
@@ -49,6 +53,7 @@ public class RoleControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void findAllRoles() throws Exception {
         List<Role> roles = List.of(
                 testSavedRole
@@ -66,6 +71,7 @@ public class RoleControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void findRoleById() throws Exception {
         when(repository.findById(1)).thenReturn(Optional.of(testSavedRole));
 
@@ -80,6 +86,7 @@ public class RoleControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void createRole() throws Exception {
         when(repository.save(testRole)).thenReturn(testSavedRole);
 
@@ -96,6 +103,7 @@ public class RoleControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void updateRole() throws Exception {
         when(repository.save(testSavedRole)).thenReturn(testSavedRole);
         when(repository.existsById(1)).thenReturn(true);
@@ -107,6 +115,7 @@ public class RoleControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void deleteRole() throws Exception {
         doNothing().when(repository).deleteById(1);
 
