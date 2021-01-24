@@ -4,7 +4,8 @@
 
 ### Technologies:
 * Java 14
-* Spring (Boot, Data, MVC, AOP)
+* Spring (Boot, Data, MVC, Security (JWT), AOP)
+* Web
 * Postgres
 * Mockito
 * Maven
