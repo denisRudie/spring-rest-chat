@@ -40,6 +40,12 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     }
 
     @Override
+    public void configure(org.springframework.security.config.annotation.web.builders.WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/v3/api-docs", "/configuration/ui", "/swagger-resources/**",
+                "/configuration/security", "/swagger-ui.html", "/swagger-ui/**", "/webjars/**");
+    }
+
+    @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
     }
